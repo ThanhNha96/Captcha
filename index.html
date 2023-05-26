@@ -74,10 +74,10 @@
       { image: "img/1.gif", keyword: "분노한무법" },
       { image: "img/2.gif", keyword: "햄버거차원" },
       { image: "img/3.gif", keyword: "에드엘리" },
-      { image: "img/4.gif", keyword: "던전의말팽이아" },
+      { image: "img/4.gif", keyword: "던전의달팽이아" },
       { image: "img/5.gif", keyword: "광객인퍼널" },
       { image: "img/6.gif", keyword: "어둠의집행" },
-      { image: "img/7.gif", keyword: "문스터펀" },
+      { image: "img/7.gif", keyword: "몬스터펀" },
       { image: "img/8.gif", keyword: "물형흰털아기원" },
       { image: "img/9.gif", keyword: "키무우르" },
       { image: "img/10.gif", keyword: "돼지외함께춤" },
@@ -130,6 +130,7 @@
         clearTimeout(countdownTimer);
         countdownDisplay.textContent = "Phế vật có bao nhiêu đó cũng không xong.";
         refreshCaptcha();
+        startCountdown(); // Bắt đầu đếm ngược lại khi chuyển sang captcha mới
       } else {
         secondsRemaining--;
       }
