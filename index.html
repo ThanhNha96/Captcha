@@ -2,9 +2,7 @@
 <html>
 <head>
   <!-- Các thẻ khác trong head -->
-	<link rel = "icon" href =
-			"img/icon.png"
-			type = "img/icon">
+	<link rel="icon" href="img/icon.png" type="img/icon">
   <title>메이플스토리</title>
   <style>
     body {
@@ -72,20 +70,19 @@
   <script type="text/javascript">
     var countdownTimer;
     var secondsRemaining = 60;
-    var captchaImages = [
-      "img/1.gif",
-      "img/2.gif",
-      "img/3.gif",
-      "img/4.gif",
-      "img/5.gif",
+    var captchas = [
+      { image: "img/1.gif", keyword: "분노한무법" },
+      { image: "img/2.gif", keyword: "햄버거차원" },
+      { image: "img/3.gif", keyword: "레이벌쳐" }
     ];
-    var currentImageIndex = 0;
+    var currentCaptchaIndex = Math.floor(Math.random() * captchas.length);
     var correctCount = 0;
     var incorrectCount = 0;
 
     function validateCaptcha() {
       var input = document.getElementById('captchaInput').value;
-      if (input.toUpperCase() === "분노한무법" || input.toUpperCase() === "햄버거차원" || input.toUpperCase() === "에드엘리" || input.toUpperCase() === "던전의달팽이이" || input.toUpperCase() === "광객인퍼널") {
+      var currentCaptcha = captchas[currentCaptchaIndex];
+      if (input.toUpperCase() === currentCaptcha.keyword.toUpperCase()) {
         alert("Còn gà này hôm nay hay đó!");
         correctCount++;
         updateCounts();
@@ -100,9 +97,10 @@
     }
 
     function refreshCaptcha() {
-      currentImageIndex = (currentImageIndex + 1) % captchaImages.length;
+      currentCaptchaIndex = Math.floor(Math.random() * captchas.length);
+      var currentCaptcha = captchas[currentCaptchaIndex];
       var gifImage = document.getElementById('captchaGif');
-      gifImage.src = captchaImages[currentImageIndex];
+      gifImage.src = currentCaptcha.image;
       document.getElementById('captchaInput').value = "";
     }
 
@@ -166,8 +164,8 @@
   <img id="captchaGif" src="img/1.gif" alt="Captcha GIF">
   <br>
   <div class="count-container">
-  <div id="correctCount" style="font-size: 20px;">Số lần nhấn đúng: 0</div>
-  <div id="incorrectCount" style="font-size: 20px;">Số lần nhấn sai: 0</div>
+    <div id="correctCount" style="font-size: 20px;">Số lần nhấn đúng: 0</div>
+    <div id="incorrectCount" style="font-size: 20px;">Số lần nhấn sai: 0</div>
   </div>
   <br>
   <label for="captchaInput">Nhập code:</label>
@@ -193,5 +191,4 @@
     });
   </script>
 </body>
-
 </html>
