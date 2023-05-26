@@ -2,8 +2,9 @@
 <html>
 
 <head>
+  <title>메이플스토리</title>
   <style>
-	body {
+    body {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -11,66 +12,60 @@
       height: 100vh;
       margin: 0;
     }
-	h1 {
-      font-size: 100px;
-    }
-	 
-	#countdown {
-      font-size: 30px;
-    }
-	
-	label {
-      font-size: 30px;
-    }
-	 
-	 button {
-      font-size: 25px;
-    }
-	
+
     h1 {
-      color: orange;	/* Thay đổi màu cho dòng "Tiêu đề trang" */
+      font-size: 100px;
+      color: orange;
     }
 
     #countdown {
-      color: white;	/* Thay đổi màu cho dòng "Thời gian đếm ngược" */
-	  
+      font-size: 30px;
+      color: purple;
     }
-	
-    label[for="captchaInput"] {
-      color: red;	/* Thay đổi màu cho dòng "Nhập captcha" */
+
+    label {
+      font-size: 30px;
+      color: red;
     }
-	
+
     button {
-      color: green;	/* Thay đổi màu cho dòng "button" */
+      font-size: 25px;
+      color: green;
     }
+
     #correctCount {
-      color: blue; /* Thay đổi màu cho dòng "Số lần nhấn đúng" */
+      color: blue;
     }
+
     #incorrectCount {
-      color: red; /* Thay đổi màu cho dòng "Số lần nhấn sai" */
+      color: red;
     }
+
     .button-container button {
-      margin-right: 10px; /* Khoảng cách giữa các nút button */
+      margin-right: 10px;
     }
+
     .button-container {
       display: flex;
       justify-content: center;
-      margin-top: 10px; /* Khoảng cách từ container đến các phần tử khác */
+      margin-top: 10px;
     }
+
     .count-container {
-      display: flex; /* Hiển thị các phần tử trên cùng một hàng */
-      margin-top: 10px; /* Khoảng cách từ container đến các phần tử khác */
+      display: flex;
+      margin-top: 10px;
     }
+
     .count-container div {
-      margin-right: 10px; /* Khoảng cách giữa các div */
+      margin-right: 10px;
     }
+
     #captchaInput {
-      width: 300px; /* Độ rộng khung nhập code */
-      padding: 5px; /* Khoảng cách giữa nội dung và viền của khung */
-      font-size: 20px; /* Kích thước chữ trong khung */
+      width: 300px;
+      padding: 5px;
+      font-size: 20px;
     }
   </style>
-  <title>메이플스토리</title>
   <script type="text/javascript">
     var countdownTimer;
     var secondsRemaining = 60;
@@ -86,13 +81,13 @@
       var input = document.getElementById('captchaInput').value;
       if (input.toUpperCase() === "분노한무법" || input.toUpperCase() === "햄버거차원" || input.toUpperCase() === "레이벌쳐") {
         alert("Còn gà này hôm nay hay đó!");
-        correctCount++; // Tăng số lần nhấn đúng
+        correctCount++;
         updateCounts();
         clearTimeout(countdownTimer);
         resetCaptcha();
       } else {
         alert("Đồ óc cho có như thế cũng bấm sai.");
-        incorrectCount++; // Tăng số lần nhấn sai
+        incorrectCount++;
         updateCounts();
         refreshCaptcha();
       }
@@ -151,8 +146,15 @@
       var incorrectCountDisplay = document.getElementById('incorrectCount');
       incorrectCountDisplay.textContent = "Số lần nhấn sai: " + incorrectCount;
     }
+
+    // Bắt đầu đếm ngược khi trang được tải
+    document.addEventListener("DOMContentLoaded", function() {
+      startCountdown();
+    });
   </script>
 </head>
+
+<body>
   <h1>메이플스토리</h1>
   <div id="countdown">Thời gian còn lại: 60 giây</div>
   <img id="captchaGif" src="img/1.gif" alt="Captcha GIF">
@@ -170,12 +172,20 @@
     <button onclick="refreshCaptcha()">Làm mới</button>
   </div>
   <style>
-body {
-  background-image: url('img/backgroud.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed; 
-  background-size: 100% 100%;
-}
+    body {
+      background-image: url('img/background.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
   </style>
+
+  <script type="text/javascript">
+    // Bắt đầu đếm ngược khi trang được tải
+    document.addEventListener("DOMContentLoaded", function() {
+      startCountdown();
+    });
+  </script>
 </body>
+
 </html>
