@@ -75,6 +75,7 @@
     var captchaImages = [
       "img/1.gif",
       "img/2.gif",
+      "img3.gif",
     ];
     var currentImageIndex = 0;
     var correctCount = 0;
@@ -82,7 +83,7 @@
 
     function validateCaptcha() {
       var input = document.getElementById('captchaInput').value;
-      if (input.toUpperCase() === "분노한무법" || input.toUpperCase() === "햄버거차원" || input.toUpperCase() === "레이벌쳐") {
+      if (input.toUpperCase() === "분노한무법" || input.toUpperCase() === "햄버거차원" || input.toUpperCase() === "에드엘리") {
         alert("Còn gà này hôm nay hay đó!");
         correctCount++;
         updateCounts();
