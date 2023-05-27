@@ -21,7 +21,7 @@
 
     #countdown {
       font-size: 30px;
-      color: purple;
+      color: orange;
     }
 
     label {
@@ -35,7 +35,7 @@
     }
 
     #correctCount {
-      color: blue;
+      color: white;
     }
 
     #incorrectCount {
@@ -66,6 +66,8 @@
       padding: 5px;
       font-size: 20px;
     }
+    
+
   </style>
   <script type="text/javascript">
     var countdownTimer;
@@ -81,9 +83,9 @@
       { image: "img/8.gif", keyword: "물형흰털아기원" },
       { image: "img/9.gif", keyword: "키무우르" },
       { image: "img/10.gif", keyword: "돼지외함께춤" },
-      { image: "img/11.gif", keyword: "일위험한뉴트" },
+      { image: "img/11.gif", keyword: "일위험한뉴트" }
     ];
-    var currentCaptchaIndex = Math.floor(Math.random() * captchas.length);
+    var currentCaptchaIndex = 0;
     var correctCount = 0;
     var incorrectCount = 0;
 
@@ -100,15 +102,14 @@
         alert("Đồ óc cho có như thế cũng bấm sai.");
         incorrectCount++;
         updateCounts();
-        refreshCaptcha();
+        document.getElementById('captchaInput').value = "";
       }
     }
 
     function refreshCaptcha() {
-      currentCaptchaIndex = Math.floor(Math.random() * captchas.length);
-      var currentCaptcha = captchas[currentCaptchaIndex];
+      currentCaptchaIndex = (currentCaptchaIndex + 1) % captchas.length;
       var gifImage = document.getElementById('captchaGif');
-      gifImage.src = currentCaptcha.image;
+      gifImage.src = captchas[currentCaptchaIndex].image;
       document.getElementById('captchaInput').value = "";
     }
 
@@ -130,7 +131,6 @@
         clearTimeout(countdownTimer);
         countdownDisplay.textContent = "Phế vật có bao nhiêu đó cũng không xong.";
         refreshCaptcha();
-        startCountdown(); // Bắt đầu đếm ngược lại khi chuyển sang captcha mới
       } else {
         secondsRemaining--;
       }
@@ -170,11 +170,11 @@
 <body>
   <h1>메이플스토리</h1>
   <div id="countdown">Thời gian còn lại: 60 giây</div>
-  <img id="captchaGif" src="img/1.gif" alt="Captcha GIF">
+  <img id="captchaGif" class="captcha-image" src="img/1.gif" alt="Captcha GIF">
   <br>
   <div class="count-container">
-    <div id="correctCount" style="font-size: 20px;">Số lần nhấn đúng: 0</div>
-    <div id="incorrectCount" style="font-size: 20px;">Số lần nhấn sai: 0</div>
+    <div id="correctCount" style="font-size: 30px;">Số lần nhấn đúng: 0</div>
+    <div id="incorrectCount" style="font-size: 30px;">Số lần nhấn sai: 0</div>
   </div>
   <br>
   <label for="captchaInput">Nhập code:</label>
@@ -200,4 +200,5 @@
     });
   </script>
 </body>
+
 </html>
