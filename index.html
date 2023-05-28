@@ -91,14 +91,12 @@
     var currentCaptchaIndex = 0;
     var correctCount = 0;
     var incorrectCount = 0;
-    var correctSound = new Audio('sound/correct.mp3');
-    var incorrectSound = new Audio('sound/incorrect.mp3');
-    var refreshCaptcha = new Audio('sound/timeout.mp3');
 
     function validateCaptcha() {
       var input = document.getElementById('captchaInput').value;
       var currentCaptcha = captchas[currentCaptchaIndex];
       if (input.toUpperCase() === currentCaptcha.keyword.toUpperCase()) {
+        var correctSound = new Audio('sound/correct.mp3');
         correctSound.play();
         alert("Còn gà này hôm nay hay đó!");
         correctCount++;
@@ -106,6 +104,7 @@
         clearTimeout(countdownTimer);
         resetCaptcha();
       } else {
+        var incorrectSound = new Audio('sound/incorrect.mp3');
         incorrectSound.play();
         alert("Đồ óc cho có như thế cũng bấm sai.");
         incorrectCount++;
@@ -192,9 +191,6 @@
     <button onclick="validateCaptcha()">Xác nhận</button>
     <button onclick="refreshCaptcha()">Làm mới</button>
   </div>
-<script src="sound/correct.mp3"></script>
-<script src="sound/incorrect.mp3"></script>
-<script src="sound/timeout.mp3"></script>
   <style>
     body {
       background-image: url('img/background.jpg');
