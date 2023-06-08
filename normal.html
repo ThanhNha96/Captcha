@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Các thẻ khác trong head -->
+	<link rel="icon" href="img/icon.png" type="img/icon">
+  <title>메이플스토리</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 100px;
+      color: white;
+    }
+
+    #countdown {
+      font-size: 30px;
+      color: orange;
+    }
+
+    label {
+      font-size: 30px;
+      color: red;
+    }
+
+    button {
+      font-size: 25px;
+      color: green;
+    }
+
+    #correctCount {
+      color: white;
+    }
+
+    #incorrectCount {
+      color: red;
+    }
+
+    .button-container button {
+      margin-right: 10px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .count-container {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .count-container div {
+      margin-right: 10px;
+    }
+
+    #captchaInput {
+      width: 300px;
+      padding: 5px;
+      font-size: 20px;
+    }
+    
+
+  </style>
+  <script type="text/javascript">
+    var countdownTimer;
+    var secondsRemaining = 60;
+    var captchas = [
+      { image: "img-2/1.gif", keyword: "조수블루습격자" },
+      { image: "img-2/2.gif", keyword: "이프손잡이" },
+      { image: "img-2/3.gif", keyword: "레이벌쳐" },
+      { image: "img-2/4.gif", keyword: "에드엘리" },
+      { image: "img-2/5.gif", keyword: "프기갑병" },
+      { image: "img-2/6.gif", keyword: "새우가면" },
+      { image: "img-2/7.gif", keyword: "키라라룽칼로" },
+      { image: "img-2/8.gif", keyword: "트러블메이커" },
+      { image: "img-2/9.gif", keyword: "버크손님대신관" },
+      { image: "img-2/10.gif", keyword: "지그리드엘로우" },
+      { image: "img-2/11.gif", keyword: "현자렉스탕탕아" },
+      { image: "img-2/12.gif", keyword: "리스탄의영" },
+      { image: "img-2/13.gif", keyword: "얼어불은허무" },
+      { image: "img-2/14.gif", keyword: "트러블메이" },
+      { image: "img-2/15.gif", keyword: "드래곤터틀" },
+      { image: "img-2/16.gif", keyword: "붉운모래난쟁이" },
+      { image: "img-2/17.gif", keyword: "구펀록노바지원" },
+      { image: "img-2/18.gif", keyword: "올리비아핑크빈" },
+      { image: "img-2/19.gif", keyword: "황룡아기바" },
+      { image: "img-2/20.gif", keyword: "추는빨간구" },
+      { image: "img-2/21.gif", keyword: "타픽시데들" },
+      { image: "img-2/22.gif", keyword: "들리디스트로이" },
+      { image: "img-2/23.gif", keyword: "첼릭버스" },
+      { image: "img-2/24.gif", keyword: "드래곤터틀" },
+      { image: "img-2/25.gif", keyword: "알베르트" },
+      { image: "img-2/26.gif", keyword: "타그레이" },
+      { image: "img-2/27.gif", keyword: "잃은그레이" },
+      { image: "img-2/28.gif", keyword: "염된수액삐빅" },
+      { image: "img-2/29.gif", keyword: "드릭체키스코" },
+      { image: "img-2/30.gif", keyword: "주시하는" },
+      { image: "img-2/31.gif", keyword: "얼어불은고독" },
+      { image: "img-2/32.gif", keyword: "이머파란버섯" },
+      { image: "img-2/33.gif", keyword: "더키패밀" },
+      { image: "img-2/34.gif", keyword: "시약의피조" },
+      { image: "img-2/35.gif", keyword: "창레옹모리" },
+      { image: "img-2/36.gif", keyword: "에델슈티인게시" },
+      { image: "img-2/37.gif", keyword: "렉스라일라" },
+      { image: "img-2/38.gif", keyword: "브라운테" },
+      { image: "img-2/39.gif", keyword: "파르마엘리쟈" },
+      { image: "img-2/40.gif", keyword: "데들리아울" },
+      { image: "img-2/41.gif", keyword: "로이스큰펭귄" },
+      { image: "img-2/42.gif", keyword: "비올레타유리관" },
+      { image: "img-2/43.gif", keyword: "불꽃의사" },
+      { image: "img-2/44.gif", keyword: "들리디스트로이" },
+      { image: "img-2/45.gif", keyword: "계의제단" },
+      { image: "img-2/46.gif", keyword: "시미아나뭇가지" },
+      { image: "img-2/47.gif", keyword: "뒷골목의제이엠" },
+      { image: "img-2/48.gif", keyword: "스텐노무쇠" },
+      { image: "img-2/49.gif", keyword: "벨루어벤제롬" },
+      { image: "img-2/50.gif", keyword: "종자의수하" },
+      { image: "img-2/51.gif", keyword: "올리버거대스콜" },
+    ];
+    var currentCaptchaIndex = 0;
+    var correctCount = 0;
+    var incorrectCount = 0;
+
+    function validateCaptcha() {
+      var input = document.getElementById('captchaInput').value;
+      var currentCaptcha = captchas[currentCaptchaIndex];
+      if (input.toUpperCase() === currentCaptcha.keyword.toUpperCase()) {
+        var correctSound = new Audio('sound/correct.mp3');
+        correctSound.play();
+        alert("Còn gà này hôm nay hay đó!");
+        correctCount++;
+        updateCounts();
+        clearTimeout(countdownTimer);
+        resetCaptcha();
+      } else {
+        var incorrectSound = new Audio('sound/incorrect.mp3');
+        incorrectSound.play();
+        alert("Đồ óc cho có như thế cũng bấm sai.");
+        incorrectCount++;
+        updateCounts();
+        document.getElementById('captchaInput').value = "";
+      }
+    }
+
+    function refreshCaptcha() {
+      currentCaptchaIndex = (currentCaptchaIndex + 1) % captchas.length;
+      var gifImage = document.getElementById('captchaGif');
+      gifImage.src = captchas[currentCaptchaIndex].image;
+      document.getElementById('captchaInput').value = "";
+    }
+
+    function resetCaptcha() {
+      refreshCaptcha();
+      startCountdown();
+    }
+
+    function startCountdown() {
+      secondsRemaining = 60;
+      countdownTimer = setInterval(updateCountdown, 1000);
+    }
+
+    function updateCountdown() {
+      var countdownDisplay = document.getElementById('countdown');
+      countdownDisplay.textContent = "Thời gian còn lại: " + secondsRemaining + " giây";
+
+      if (secondsRemaining === 0) {
+        clearTimeout(countdownTimer);
+        countdownDisplay.textContent = "Phế vật có bao nhiêu đó cũng không xong.";
+        refreshCaptcha();
+      } else {
+        secondsRemaining--;
+      }
+    }
+
+    // Xử lý sự kiện nhấn phím Enter trên toàn trang
+    document.addEventListener("keypress", function(event) {
+      if (event.keyCode === 13 && event.target.id === "captchaInput") {
+        event.preventDefault();
+        validateCaptcha();
+      }
+    });
+
+    // Xử lý sự kiện bấm phím Enter trong ô input captcha
+    document.getElementById("captchaInput").addEventListener("keypress", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        validateCaptcha();
+      }
+    });
+
+    function updateCounts() {
+      var correctCountDisplay = document.getElementById('correctCount');
+      correctCountDisplay.textContent = "Số lần nhấn đúng: " + correctCount;
+
+      var incorrectCountDisplay = document.getElementById('incorrectCount');
+      incorrectCountDisplay.textContent = "Số lần nhấn sai: " + incorrectCount;
+    }
+
+    // Bắt đầu đếm ngược khi trang được tải
+    document.addEventListener("DOMContentLoaded", function() {
+      startCountdown();
+    });
+  </script>
+</head>
+
+<body>
+  <h1>메이플스토리</h1>
+  <div id="countdown">Thời gian còn lại: 60 giây</div>
+  <img id="captchaGif" class="captcha-image" src="img-2/1.gif" alt="Captcha GIF">
+  <br>
+  <div class="count-container">
+    <div id="correctCount" style="font-size: 30px;">Số lần nhấn đúng: 0</div>
+    <div id="incorrectCount" style="font-size: 30px;">Số lần nhấn sai: 0</div>
+  </div>
+  <br>
+  <label for="captchaInput">Nhập code:</label>
+  <input type="text" id="captchaInput" name="captchaInput" placeholder="Nhập các ký tự ở đây">
+  <br>
+  <div class="button-container">
+    <button onclick="validateCaptcha()">Xác nhận</button>
+    <button onclick="refreshCaptcha()">Làm mới</button>
+  </div>
+  <style>
+    body {
+      background-image: url('img/background.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+  </style>
+
+  <script type="text/javascript">
+    // Bắt đầu đếm ngược khi trang được tải
+    document.addEventListener("DOMContentLoaded", function() {
+      startCountdown();
+    });
+  </script>
+</body>
+
+</html>
