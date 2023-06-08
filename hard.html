@@ -231,8 +231,10 @@
       background-size: 100% 100%;
     }
   </style>
-
-  <script type="text/javascript">
+        <audio id="player" autoplay loop>
+            <source src="./sound/music.mp3" type="audio/mp3" />
+        </audio>
+	  
     // Bắt đầu đếm ngược khi trang được tải
     document.addEventListener("DOMContentLoaded", function() {
       startCountdown();
