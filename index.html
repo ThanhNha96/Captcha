@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- Các thẻ khác trong head -->
 	<link rel="icon" href="img/icon.png" type="img/icon">
   <title>메이플스토리</title>
-        <!-- 3. Phần nhạc -->
-        <audio id="player" autoplay loop>
-            <source src="/sound/music.mp3" type="audio/mp3" />
-        </audio>
   <style>
     body {
       display: flex;
@@ -47,10 +42,33 @@
      text-decoration: none;
      border-radius: 4px;
      }
-    
 
+        body {
+            background-color: #000;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .letter {
+            display: inline-block;
+            color: #fff;
+            font-size: 72px;
+            margin: 0 10px;
+            text-shadow: 0 0 10px #ff0000;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            50% {
+                color: #ff100000;
+                text-shadow: 0 0 20px #ff0000;
+            }
+        }
   </style>
-
+</head>
 <body>
   <h1>메이플스토리</h1>
 <div>
@@ -66,10 +84,27 @@
       background-size: 100% 100%;
     }
   </style>
-        <audio id="player" autoplay loop>
-            <source src="./sound/music.mp3" type="audio/mp3" />
-        </audio>
-  </script>
-</body>
+ </body>
+  <body>
+    <div>
+        <span class="letter">T</span>
+        <span class="letter">h</span>
+        <span class="letter">a</span>
+        <span class="letter">n</span>
+        <span class="letter">h</span>
+        <span class="letter">❤️</span>
+        <span class="letter">N</span>
+        <span class="letter">h</span>
+        <span class="letter">ã</span>
+    </div>
+      <script>
+        function toggleLight() {
+            const letters = document.querySelectorAll('.letter');
+            letters.forEach((letter) => {
+                letter.classList.toggle('light');
+            });
+        }
 
+        setInterval(toggleLight, 500);
+    </script>
 </html>
