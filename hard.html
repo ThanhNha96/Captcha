@@ -93,8 +93,36 @@
       padding: 5px;
       font-size: 20px;
     }
-    
-
+    //Trai tim
+	        body {
+            background-color: #000;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .letter {
+            display: inline-block;
+            color: #fff;
+            font-size: 72px;
+            margin: 0 10px;
+            text-shadow: 0 0 10px #ff0000;
+            animation: blink 1s infinite;
+        }
+        
+        .light {
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000;
+        }
+        
+        @keyframes blink {
+            50% {
+                color: #ff100000;
+                text-shadow: 0 0 20px #ff0000;
+            }
+        }
   </style>
   <script type="text/javascript">
     var countdownTimer;
@@ -244,6 +272,27 @@
       startCountdown();
     });
   </script>
+      <div>
+        <span class="letter">T</span>
+        <span class="letter">h</span>
+        <span class="letter">a</span>
+        <span class="letter">n</span>
+        <span class="letter">h</span>
+        <span class="letter">❤️</span>
+        <span class="letter">N</span>
+        <span class="letter">h</span>
+        <span class="letter">ã</span>
+    </div>
+      <script>
+        function toggleLight() {
+            const letters = document.querySelectorAll('.letter');
+            letters.forEach((letter) => {
+                letter.classList.toggle('light');
+            });
+        }
+
+        setInterval(toggleLight, 500);
+    </script>
 </body>
 
 </html>
