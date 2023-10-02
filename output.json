@@ -1,0 +1,4 @@
+curl -X POST -H "Content-Type: application/json" \
+-H "Authorization: Bearer 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" \
+-d '{"prompt": "Tell me a joke."}' \
+https://api.openai.com/v1/chat/completions -o /path/to/your/output.json
