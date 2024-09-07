@@ -488,6 +488,60 @@ void main(void) {
 
 <audio id="myAudio" autoplay muted>
 <source src="mp3/music.mp3" type="audio/mpeg">
+<body>
+    <audio id="myAudio" autoplay muted>
+        <source id="audioSource" src="" type="audio/mpeg">
+    </audio>
+
+    <ul id="playlist">
+        <li data-src="mp3/music.mp3">Bài hát 1</li>
+        <li data-src="mp3/music2.mp3">Bài hát 2</li>
+        <li data-src="mp3/music3.mp3">Bài hát 3</li>
+    </ul>
+
+    <script>
+        var playlist = document.getElementById('playlist');
+        var audio = document.getElementById('myAudio');
+        var audioSource = document.getElementById('audioSource');
+        var currentTrack = 0;
+
+        // Phát bài hát đầu tiên
+        audioSource.src = playlist.children[currentTrack].getAttribute('data-src');
+        audio.load();
+
+        window.addEventListener('load', function() {
+            audio.play().catch(function(error) {
+                console.log('Tự động phát bị chặn:', error);
+            });
+        });
+
+        // Thêm sự kiện tương tác để bỏ tắt tiếng
+        window.addEventListener('click', function() {
+            audio.muted = false; // Bật âm thanh
+            audio.play(); // Phát âm thanh
+        });
+
+        // Thêm sự kiện click cho từng bài hát trong danh sách
+        for (let i = 0; i < playlist.children.length; i++) {
+            playlist.children[i].addEventListener('click', function() {
+                currentTrack = i;
+                audioSource.src = this.getAttribute('data-src');
+                audio.load();
+                audio.play();
+            });
+        }
+
+        // Tự động chuyển bài khi bài hát kết thúc
+        audio.addEventListener('ended', function() {
+            currentTrack++;
+            if (currentTrack >= playlist.children.length) {
+                currentTrack = 0; // Quay lại bài đầu tiên nếu đã phát hết
+            }
+            audioSource.src = playlist.children[currentTrack].getAttribute('data-src');
+            audio.load();
+            audio.play();
+        });
+    </script>
 </audio>    
 </body>
 </html>
