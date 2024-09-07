@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>메이플스토리 - Normal</title>
+<title>메이플스토리 - Hard</title>
 	<link rel="icon" href="img/icon.png" type="img/icon">
 
 
@@ -19,49 +18,209 @@
 <script src="./js/uti.js"></script>
 <style>
   <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        .music-player {
+            background: rgba(255, 255, 255, 0.5); /* Nền trong suốt */
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+            position: absolute;
+            top: 300px;
+            right: 1px;
+            display: none;
+            z-index: 1000;
+            overflow: hidden; /* Đảm bảo các nốt nhạc bay ra khỏi khung */
+        }
+		.cover {
+		border-radius: 50%;
+		width: 120px;
+		height: 120px;
+		background-size: cover;
+		background-position: center;
+		margin: 0 auto;
+		position: relative;
+		animation: rotate 10s linear infinite; /* Xoay liên tục */
+			}
 
+        .notes {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Không chặn sự kiện chuột */
+            transform: translate(-50%, -50%);
+        }
+        .note {
+            position: absolute;
+            font-size: 24px; /* Kích thước ký tự */
+            color: black;
+            opacity: 0;
+            animation: fly 3s ease-in-out infinite;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes fly {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(150px, -150px); /* Điều chỉnh khoảng cách bay ra */
+                opacity: 0;
+            }
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+			
+        }
+        .controls button {
+            background-color: #ff9999;
+            color: pink;
+            border: none;
+            border-radius: 10px;
+            padding: 5px 5px;
+            cursor: pointer;
+            margin: 0 5px;
+			font-size: 20px;
+        }
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+		/* Container của thanh tiến trình */
+		.progress {
+			position: relative;
+			width: 100%;
+			height: 11px;
+			background: #ccc; /* Màu nền của thanh chưa phát */
+			border-radius: 5px;
+			overflow: hidden; /* Ẩn mọi phần tràn ra ngoài */
+		}
 
-button {
-    margin: 5px; /* Đảm bảo các nút có khoảng cách giữa chúng */
-}
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
+		/* Thanh màu xanh đại diện cho thời gian đã phát */
+		.progress-fill {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 11px;
+			background-color: #66fff0; /* Màu cho phần thời gian đã qua */
+			border-radius: 5px;
+			z-index: 1;
+			width: 0%; /* Sẽ được cập nhật động */
+		}
 
-    h1 {
-      font-size: 100px;
-      color: white;
-    }
+		/* Thanh tiến trình - input */
+		#progressBar {
+			width: 100%;
+			appearance: none;
+			height: 11px;
+			background: transparent; /* Làm trong suốt để lớp màu phía dưới hiện ra */
+			position: relative;
+			z-index: 2; /* Đảm bảo nó ở trên lớp màu thời gian đã qua */
+		}
 
-	.button-link-1 {
-     display: inline-block;
-     padding: 10px 20px;
-     background-color: white;
-     color: black;
-     text-decoration: none;
-     border-radius: 4px;
-     }
-	.button-link-2 {
-     display: inline-block;
-     padding: 10px 20px;
-     background-color: blue;
-     color: white;
-     text-decoration: none;
-     border-radius: 4px;
-     }
-	.button-link-3 {
-     display: inline-block;
-     padding: 10px 20px;
-     background-color: red;
-     color: black;
-     text-decoration: none;
-     border-radius: 4px;
-     }
+		/* Chấm tròn của thanh (webkit) */
+		#progressBar::-webkit-slider-thumb {
+			appearance: none;
+			width: 13px;
+			height: 13px;
+			background: #ff9999;
+			border-radius: 50%;
+			cursor: pointer;
+			position: relative;
+			z-index: 3; /* Đảm bảo chấm tròn luôn ở trên cùng */
+		}
+
+		/* Chấm tròn của thanh (mozilla) */
+		#progressBar::-moz-range-thumb {
+			width: 13px;
+			height: 13px;
+			background: #ff9999;
+			border-radius: 50%;
+			cursor: pointer;
+			position: relative;
+			z-index: 3; /* Đảm bảo chấm tròn luôn ở trên cùng */
+		}
+
+			#toggleButton {
+            position: absolute;
+            top: 425px;
+            right: -10px;
+            background-color: #ff9999;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            width: 35px; /* Tăng chiều rộng */
+            height: 80px; /* Tăng chiều cao */
+            font-size: 24px; /* Tăng kích thước chữ cho phù hợp */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Căn giữa mũi tên */
+            border-radius: 10px; /* Thêm bo góc giống như trong hình */
+			}
+			#duration {
+			display: none;
+			}
+
+		button {
+		margin: 5px; /* Đảm bảo các nút có khoảng cách giữa chúng */
+		}
+		body {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  justify-content: center;
+		  height: 100vh;
+		  margin: 0;
+		}
+
+		h1 {
+		  font-size: 100px;
+		  color: white;
+		}
+
+		.button-link-1 {
+		 display: inline-block;
+		 padding: 10px 20px;
+		 background-color: white;
+		 color: black;
+		 text-decoration: none;
+		 border-radius: 4px;
+		 }
+		.button-link-2 {
+		 display: inline-block;
+		 padding: 10px 20px;
+		 background-color: blue;
+		 color: white;
+		 text-decoration: none;
+		 border-radius: 4px;
+		 }
+		.button-link-3 {
+		 display: inline-block;
+		 padding: 10px 20px;
+		 background-color: red;
+		 color: black;
+		 text-decoration: none;
+		 border-radius: 4px;
+		 }
 
         body {
             background-color: #000;
@@ -79,7 +238,7 @@ button {
             margin: 0 10px;
             text-shadow: 0 0 10px #ff0000;
             animation: blink 1s infinite;
-        }        
+        }
         .letter_1 {
             display: inline-block;
             color: #ff9999;
@@ -96,55 +255,53 @@ button {
             }
         }
 		
-.wrapper {
-    position: relative;
-}
-.login {
-    display: flex !important;
-    min-height: 100vh;
-    align-items: center !important;
-    justify-content: center !important;
-}
-.login-center {
-    background: #fff;
-    min-width: 38.25rem;
-    padding: 2.14286em 3.57143em;
-    border-radius: 5px;
-    margin: 2.85714em 0;
-}
-.login-header {
-    margin-bottom: 1.5rem !important;
-}
-.login-center .has-feedback.feedback-left .form-control {
-    padding-left: 38px;
-    padding-right: 12px;
-}
-.login-center .has-feedback.feedback-left .form-control-feedback {
-    left: 0;
-    right: auto;
-    width: 38px;
-    height: 38px;
-    line-height: 38px;
-    z-index: 4;
-    color: #dcdcdc;
-}
-.login-center .has-feedback.feedback-left.row .form-control-feedback {
-    left: 15px;
-}
-  html, body {
-    height: 100%;
-    margin: 0;
-}
+		.wrapper {
+			position: relative;
+		}
+		.login {
+			display: flex !important;
+			min-height: 100vh;
+			align-items: center !important;
+			justify-content: center !important;
+		}
+		.login-center {
+			background: #fff;
+			min-width: 38.25rem;
+			padding: 2.14286em 3.57143em;
+			border-radius: 5px;
+			margin: 2.85714em 0;
+		}
+		.login-header {
+			margin-bottom: 1.5rem !important;
+		}
+		.login-center .has-feedback.feedback-left .form-control {
+			padding-left: 38px;
+			padding-right: 12px;
+		}
+		.login-center .has-feedback.feedback-left .form-control-feedback {
+			left: 0;
+			right: auto;
+			width: 38px;
+			height: 38px;
+			line-height: 38px;
+			z-index: 4;
+			color: #dcdcdc;
+		}
+		.login-center .has-feedback.feedback-left.row .form-control-feedback {
+			left: 15px;
+		}
+		  html, body {
+			height: 100%;
+			margin: 0;
+		}
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
-    flex-direction: column; /* Dành cho việc căn giữa theo chiều dọc */
-}
-</style>
-<style>
+		.container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 50vh;
+			flex-direction: column; /* Dành cho việc căn giữa theo chiều dọc */
+		}
 	.lizi1{
 		display:table;
 		z-index:10;
@@ -158,7 +315,39 @@ button {
 </style>
 
 </head>
+
 <body>
+    <button id="toggleButton"><</button>
+    <div class="music-player" id="musicPlayer">
+        <div class="cover">
+            <div class="notes">
+                <!-- Thêm nhiều nốt nhạc với các vị trí và thời gian khác nhau -->
+                <div class="note" style="top: 30%; left: 20%; animation-delay: 0s;">♪</div>
+                <div class="note" style="top: 40%; left: 50%; animation-delay: 1s;">♪</div>
+                <div class="note" style="top: 50%; left: 80%; animation-delay: 2s;">♪</div>
+                <div class="note" style="top: 60%; left: 30%; animation-delay: 3s;">♪</div>
+            </div>
+        </div>
+        <h2 id="trackTitle">Thanh Nhã</h2>
+        <p id="currentTime"></p>
+		<p id="duration">00:00</p>
+
+		<div class="progress">
+			<div class="progress-fill"></div> <!-- Lớp đại diện cho thời gian đã phát -->
+			<input type="range" id="progressBar" value="0" step="1" min="0" max="100">
+		</div>
+
+
+        <div class="controls">
+            <button id="prevBtn">⏮</button>
+            <button id="playBtn">▶️</button>
+            <button id="nextBtn">⏭</button>
+        </div>
+    </div>
+
+    <audio id="myAudio">
+        <source id="audioSource" src="mp3/music1.mp3" type="audio/mpeg">
+    </audio>
 <body data-logobg="color_8" data-sidebarbg="color_8">
 <!--开始-->
 <style type="text/css">
@@ -597,7 +786,6 @@ void main(void) {
 
 <div class="lizi1">
     <div class="login-header text-center">
-
 	<span class="letter_1">메이플스토리</span>
 	<div class="container">	
 <div>
@@ -648,8 +836,96 @@ void main(void) {
 
         setInterval(toggleLight, 500);
     </script>
-</body>
+	    <script>
+        const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+		const progressFill = document.getElementById('progressFill');
+        const currentTimeLabel = document.getElementById('currentTime');
+        const durationLabel = document.getElementById('duration');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const toggleButton = document.getElementById('toggleButton');
+        const trackTitle = document.getElementById('trackTitle');
+		
+
+        let currentTrack = 0;
+		const tracks = [
+		{ title: "♫ Anh Rất Nhớ Em - DJ抖音版", src: "mp3/music.mp3", cover: "cover.jpg" },
+		{ title: "♫ 大雨還在下 - 1個球", src: "mp3/music2.mp3", cover: "cover2.jpg" },
+		];
+
+
+        audio.src = tracks[currentTrack].src;
+
+        playBtn.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸️'; // Đổi thành biểu tượng tạm dừng
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶️'; // Đổi thành biểu tượng phát
+            }
+        });
+
+        prevBtn.addEventListener('click', function() {
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            loadTrack();
+        });
+
+        nextBtn.addEventListener('click', function() {
+            currentTrack = (currentTrack + 1) % tracks.length;
+            loadTrack();
+        });
+
+        audio.addEventListener('loadedmetadata', function() {
+            durationLabel.textContent = formatTime(audio.duration);
+            progressBar.max = audio.duration;
+        });
+
+        audio.addEventListener('timeupdate', function() {
+            currentTimeLabel.textContent = formatTime(audio.currentTime);
+            progressBar.value = audio.currentTime;
+        });
+
+		progressBar.addEventListener('input', function() {
+			const value = this.value;
+			progressFill.style.width = value + '%';
+		});
+		
+		function loadTrack() {
+		audio.src = tracks[currentTrack].src;
+		trackTitle.textContent = tracks[currentTrack].title; // Hiển thị tên bài hát
+		document.querySelector('.cover').style.backgroundImage = `url(${tracks[currentTrack].cover})`; // Cập nhật hình ảnh bìa
+		audio.load();
+		audio.play();
+		playBtn.textContent = '⏸️'; // Đổi thành biểu tượng tạm dừng
+		}
+
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes < 10 ? '0' : ''}${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Chức năng bật/ tắt khung nhạc
+        toggleButton.addEventListener('click', function() {
+            if (musicPlayer.style.display === 'none' || musicPlayer.style.display === '') {
+                musicPlayer.style.display = 'block'; // Hiện khung nhạc
+                toggleButton.textContent = '>'; // Đổi biểu tượng
+                toggleButton.style.right = '290px'; // Di chuyển nút sang bên phải khung nhạc
+            } else {
+                musicPlayer.style.display = 'none'; // Ẩn khung nhạc
+                toggleButton.textContent = '<'; // Đổi biểu tượng
+                toggleButton.style.right = '-10px'; // Đưa nút về vị trí ban đầu
+            }
+        });
+
+        // Hiển thị bài hát đầu tiên khi trang tải
+        window.onload = loadTrack;
+    </script>
 </body>
 </html>
-</body>
-</html>
+
